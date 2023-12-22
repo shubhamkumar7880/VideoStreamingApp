@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { toggleMenu } from "../Utils/appSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { YOUTUBE_SUGGESTION_API } from "../Const/YoutubeApi";
+import {
+  YOUTUBE_SUGGESTION_API,
+  YOUTUBE_SEARCH_API,
+  GOOGLE_API_KEY,
+} from "../Const/YoutubeApi";
 import { cacheResults } from "../Utils/searchSlice";
 
-const Head = () => {
+const Head = ({ showSuggestions, setShowSuggestions }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
   const dispatch = useDispatch();
   const searchResults = useSelector((store) => store.search);
 
   useEffect(() => {
-    console.log("searcgg", searchResults);
     const timer = setTimeout(() => {
       if (searchQuery !== "") {
         if (searchResults?.[searchQuery])
@@ -26,8 +28,16 @@ const Head = () => {
     };
   }, [searchQuery]);
 
+  const handleSearch = async (s) => {
+    setShowSuggestions(false);
+    const res = await fetch(
+      YOUTUBE_SEARCH_API + s + "surfing&key=" + GOOGLE_API_KEY
+    );
+    const data = await res.json();
+    console.log("resss", data);
+  };
+
   const getSearchSuggestion = async () => {
-    console.log("api calll");
     const res = await fetch(YOUTUBE_SUGGESTION_API + searchQuery);
     const data = await res.json();
     setSuggestions(data[1]);
@@ -64,8 +74,7 @@ const Head = () => {
             className="px-5 w-1/2 border border-gray-400 p-2 rounded-l-full"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => setShowSuggestions(true)}
-            onBlur={() => setShowSuggestions(false)}
+            id="search"
           />
           <button className="border border-gray-400 py-2 px-5 rounded-r-full bg-gray-100">
             🔍
@@ -75,7 +84,12 @@ const Head = () => {
           <div className="absolute bg-white py-2 px-2 w-[28rem] rounded-lg shadow-lg">
             <ul>
               {suggestions.map((s) => (
-                <li key={s} className="py-2 px-3 shadow-sm hover:bg-gray-100">
+                <li
+                  key={s}
+                  onClick={(s) => handleSearch(s)}
+                  className="py-2 px-3 shadow-sm hover:bg-gray-100"
+                  id="suggestion"
+                >
                   🔍 {s}
                 </li>
               ))}

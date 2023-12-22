@@ -6,6 +6,7 @@ import Head from "./components/Head";
 import { Provider } from "react-redux";
 import WatchPage from "./components/WatchPage";
 import MainContainer from "./components/MainContainer";
+import { useState } from "react";
 
 const appRouter = createBrowserRouter([
   {
@@ -25,10 +26,21 @@ const appRouter = createBrowserRouter([
 ]);
 
 function App() {
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const handleBlur = (e) => {
+    if (e?.id === "search") {
+      setShowSuggestions(true);
+    } else if (e?.id !== "suggestion") {
+      setShowSuggestions(false);
+    }
+  };
   return (
     <Provider store={store}>
-      <div>
-        <Head />
+      <div onClick={(e) => handleBlur(e.target)}>
+        <Head
+          showSuggestions={showSuggestions}
+          setShowSuggestions={setShowSuggestions}
+        />
         <RouterProvider router={appRouter} />
       </div>
     </Provider>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { closeMenu } from "../Utils/appSlice";
 import { useSearchParams } from "react-router-dom";
-import CommentsContainer from "./commentsContainer";
+import CommentsConatiner from "./CommentsConatiner";
 
 const WatchPage = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const WatchPage = () => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
       ></iframe>
-      <CommentsContainer />
+      <CommentsConatiner />
     </div>
   );
 };
