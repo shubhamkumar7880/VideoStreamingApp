@@ -15,12 +15,14 @@ const VideoCard = ({ info }) => {
       <ul>
         <li className="font-bold py-2">{title}</li>
         <li>{channelTitle}</li>
-        <li>
-          {Math.round(statistics?.viewCount / 1000) > 999
-            ? Math.round(statistics?.viewCount / 1000000) + "M"
-            : Math.round(statistics?.viewCount / 1000) + "K"}{" "}
-          views
-        </li>
+        {statistics && (
+          <li>
+            {Math.round(statistics?.viewCount / 1000) > 999
+              ? Math.round(statistics?.viewCount / 1000000) + "M"
+              : Math.round(statistics?.viewCount / 1000) + "K"}{" "}
+            views
+          </li>
+        )}
       </ul>
     </div>
   );
