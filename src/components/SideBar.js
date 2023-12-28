@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 
 const SideBar = () => {
   const location = useLocation();
-  console.log("params", location);
   return (
     <div className="p-5 shadow-lg w-60">
       <ul>
